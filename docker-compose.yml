@@ -1,0 +1,54 @@
+version: '3.1'
+
+services:
+
+  postgres:
+    container_name: pg_image
+    hostname: pg
+    image: postgres
+    restart: always
+    tty: true
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - ./postgres/:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - local_network
+
+  mongo:
+    container_name: mongo_image
+    hostname: mongo
+    image: mongo
+    restart: always
+    tty: true
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: mongo
+    volumes:
+      - ./mongo/:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - local_network
+
+  redis:
+    container_name: redis_image
+    hostname: redis
+    image: redis:alpine
+    restart: always
+    tty: true
+    volumes:
+      - ./redis/:/data
+    ports:
+      - 6379:6379
+    networks:
+      - local_network
+
+networks:
+  network:
+    driver: bridge
